@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import lewis.libby.hw2.screens.TestScreen
 import lewis.libby.hw2.ui.theme.HW2Theme
 
+//Main activity
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,7 +21,6 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-//                    Greeting("Android")
                     TestScreen()
                 }
             }

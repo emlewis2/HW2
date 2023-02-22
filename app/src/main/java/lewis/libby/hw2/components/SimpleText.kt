@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
+//To display simple text and have onClick function
 @Composable
 fun SimpleText(
     text: String,

@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
+//Simple button for clicking
 @Composable
 fun SimpleButton(
     text: String,

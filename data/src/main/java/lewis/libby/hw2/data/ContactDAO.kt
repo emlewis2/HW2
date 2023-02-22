@@ -8,51 +8,63 @@ import androidx.room.Transaction
 import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 
+//ContactDAO using Room
 @Dao
 abstract class ContactDAO {
+    //Query to return Flow for all contacts
     @Query("SELECT * FROM Contact")
     abstract fun getContactsFlow(): Flow<List<Contact>>
 
+    //Query to return Flow for all addresses
     @Query("SELECT * FROM Address")
     abstract fun getAddressesFlow(): Flow<List<Address>>
 
+    //Query to return the Contact with the Addresses
     @Transaction
     @Query("SELECT * FROM Contact WHERE id = :id")
     abstract suspend fun getContactWithAddresses(id: String): ContactWithAddresses
 
+    //Query to run a specific contact
     @Transaction
     @Query("SELECT * FROM Contact WHERE id = :id")
     abstract suspend fun getContact(id: String): Contact
 
+    //Query to return a specific address
     @Transaction
     @Query("SELECT * FROM Address WHERE id = :id")
     abstract suspend fun getAddress(id: String): Address
 
+    //Insert functions
     @Insert
     abstract suspend fun insert(vararg contacts: Contact)
     @Insert
     abstract suspend fun insert(vararg addresses: Address)
 
+    //Update functions
     @Update
     abstract suspend fun update(vararg contacts: Contact)
     @Update
     abstract suspend fun update(vararg addresses: Address)
 
+    //Delete functions
     @Delete
     abstract suspend fun delete(vararg contacts: Contact)
     @Delete
     abstract suspend fun delete(vararg addresses: Address)
 
+    //Clear functions
     @Query("DELETE FROM Address")
     abstract suspend fun clearAddresses()
     @Query("DELETE FROM Contact")
     abstract suspend fun clearContacts()
 
+    //Reset database function
     @Transaction
     open suspend fun resetDatabase() {
         clearAddresses()
         clearContacts()
 
+        //Sample data
         insert(
             Contact("c1", "Harry", "Potter", "(111) 111-1111",
                 "(222) 222-2222", "(333) 333-3333",

@@ -2,6 +2,7 @@ package lewis.libby.hw2.repository
 
 import kotlinx.coroutines.flow.Flow
 
+//Contact Repository interface for all functions from the DAO
 interface ContactRepository {
     val contactsFlow: Flow<List<ContactDto>>
     val addressesFlow: Flow<List<AddressDto>>

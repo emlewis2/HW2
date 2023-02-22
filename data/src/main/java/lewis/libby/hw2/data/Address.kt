@@ -6,6 +6,7 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 import java.util.UUID
 
+//Creating an Address class using Room annotations
 @Entity(
     indices = [
         Index(value = ["contactId"])

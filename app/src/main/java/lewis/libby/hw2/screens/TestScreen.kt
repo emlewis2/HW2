@@ -13,10 +13,12 @@ import lewis.libby.hw2.ContactScreen
 import lewis.libby.hw2.ContactViewModel
 import lewis.libby.hw2.components.SimpleButton
 
+//Setting up the test screen
 @Composable
 fun TestScreen(
     viewModel: ContactViewModel = viewModel()
 ) {
+    //Buttons for Reset, Contacts, and Addresses
     Column {
         Row {
             SimpleButton("Reset") {
@@ -32,16 +34,21 @@ fun TestScreen(
             }
         }
 
+        //Collect flows
         val contacts by viewModel.contactsFlow.collectAsState(initial = emptyList())
         val addresses by viewModel.addressesFlow.collectAsState(initial = emptyList())
 
+        //Switching screens
         when(val screen = viewModel.screen) {
+            //Screen for all contacts
             ContactList -> ContactList(contacts = contacts) { id ->
                 viewModel.switchTo(ContactScreen(id))
             }
+            //Screen for all addresses
             AddressList -> AddressList(addresses = addresses) { id ->
                 viewModel.switchTo(AddressScreen(id))
             }
+            //Screen for individual contact
             is ContactScreen -> ContactDisplay(
                 contactId = screen.id,
                 fetchContactWithAddresses = { id ->
@@ -49,6 +56,7 @@ fun TestScreen(
                 },
                 onContactClick = { id -> viewModel.switchTo(AddressScreen(id))}
             )
+            //Screen for individual address
             is AddressScreen -> AddressDisplay(
                 id = screen.id,
                 fetchAddress = { id ->
