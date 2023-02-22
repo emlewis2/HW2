@@ -108,11 +108,20 @@ fun TestScreen(
             ContactList -> ContactList(contacts = contacts) {id ->
                 viewModel.switchTo(ContactScreen(id))
             }
-            AddressList -> AddressList(addresses = addresses)
+            AddressList -> AddressList(addresses = addresses) {id ->
+                viewModel.switchTo(AddressScreen(id))
+            }
             is ContactScreen -> ContactDisplay(
                 contactId = screen.id,
                 fetchContactWithAddresses = { id ->
                     viewModel.getContactWithAddresses(id)
+                },
+                onContactClick = { id -> viewModel.switchTo(AddressScreen(id))}
+            )
+            is AddressScreen -> AddressDisplay(
+                id = screen.id,
+                fetchAddress = { id ->
+                    viewModel.getAddress(id)
                 }
             )
         }
@@ -126,7 +135,7 @@ fun ContactList(
 ) {
     SimpleText(text = "Contacts")
     contacts.forEach {
-        SimpleText(text = it.firstName) {
+        SimpleText(text = "${it.firstName} ${it.lastName}") {
             onContactClick(it.id)
         }
     }
@@ -134,33 +143,37 @@ fun ContactList(
 
 @Composable
 fun AddressList(
-    addresses: List<AddressDto>
+    addresses: List<AddressDto>,
+    onContactClick: (String) -> Unit,
 ) {
     SimpleText(text = "Addresses")
     addresses.forEach {
-        SimpleText(text = it.street)
+        SimpleText(text = "${it.type}: ${it.street}") {
+            onContactClick(it.id)
+        }
     }
 }
 
-@Composable
-fun ContactDisplay(
-    contact: ContactDto
-) {
-    SimpleText(text = "Contact")
-    Row {
-        SimpleText(text = "First Name")
-        SimpleText(text = contact.firstName)
-    }
-    Row {
-        SimpleText(text = "Email")
-        SimpleText(text = contact.email)
-    }
-}
+//@Composable
+//fun ContactDisplay(
+//    contact: ContactDto
+//) {
+//    SimpleText(text = "Contact")
+//    Row {
+//        SimpleText(text = "First Name")
+//        SimpleText(text = contact.firstName)
+//    }
+//    Row {
+//        SimpleText(text = "Email")
+//        SimpleText(text = contact.email)
+//    }
+//}
 
 @Composable
 fun ContactDisplay(
     contactId: String,
     fetchContactWithAddresses: suspend (String) -> ContactWithAddressesDto,
+    onContactClick: (String) -> Unit,
 ) {
     var contactWithAddressesDto by remember { mutableStateOf<ContactWithAddressesDto?>(null) }
 
@@ -170,9 +183,58 @@ fun ContactDisplay(
 
     SimpleText(text = "Contact")
     contactWithAddressesDto?.let { contactWithAddresses ->
-        SimpleText(text = contactWithAddresses.contact.firstName)
+        Row {
+            SimpleText(text = "Name: ${contactWithAddresses.contact.firstName} " +
+                    contactWithAddresses.contact.lastName
+            )
+        }
+        Row {
+            SimpleText("Home Phone: ${contactWithAddresses.contact.homePhone}")
+        }
+        Row {
+            SimpleText(text = "Work Phone: ${contactWithAddresses.contact.workPhone}")
+        }
+        Row {
+            SimpleText(text = "Mobile Phone: ${contactWithAddresses.contact.mobilePhone}")
+        }
+        Row {
+            SimpleText(text = "Email: ${contactWithAddresses.contact.email}")
+        }
         contactWithAddresses.addresses.forEach { address ->
-            SimpleText(text = "Address: ${address.street}")
+            SimpleText(text = "${address.type}: ${address.street}") {
+                onContactClick(address.id)
+            }
+        }
+    }
+}
+
+@Composable
+fun AddressDisplay(
+    id: String,
+    fetchAddress: suspend (String) -> AddressDto,
+) {
+    var addressDto by remember { mutableStateOf<AddressDto?>(null) }
+
+    LaunchedEffect(key1 = id) {
+        addressDto = fetchAddress(id)
+    }
+
+    SimpleText(text = "Address")
+    addressDto?.let { address ->
+        Row {
+            SimpleText(text = "Type: ${address.type}")
+        }
+        Row {
+            SimpleText(text = "Street: ${address.street}")
+        }
+        Row {
+            SimpleText(text = "City: ${address.city}")
+        }
+        Row {
+            SimpleText(text = "State: ${address.state}")
+        }
+        Row {
+            SimpleText(text = "Zip: ${address.zip}")
         }
     }
 }

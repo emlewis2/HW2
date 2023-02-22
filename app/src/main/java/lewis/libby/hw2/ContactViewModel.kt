@@ -16,6 +16,9 @@ object AddressList: Screen
 data class ContactScreen(
     val id: String
 ): Screen
+data class AddressScreen(
+    val id: String
+): Screen
 
 class ContactViewModel(application: Application) : AndroidViewModel(application) {
     private val repository: ContactRepository = ContactDatabaseRepository(application)

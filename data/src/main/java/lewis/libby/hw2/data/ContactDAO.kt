@@ -66,17 +66,17 @@ abstract class ContactDAO {
         )
 
         insert(
-            Address("a1", "home", "4 Pivot Drive", "Little Whinging",
+            Address("a1", "Home", "4 Pivot Drive", "Little Whinging",
                 "Surrey", "11111", "c1"),
-            Address("a2", "work", "1 Wizard Street", "Glasgow", "Scotland",
+            Address("a2", "Work", "1 Wizard Street", "Glasgow", "Scotland",
                 "22222", "c1"),
-            Address("a3", "home", "55 Lars Homestead Court",
+            Address("a3", "Home", "55 Lars Homestead Court",
                 "Great Chott Salt Flat", "Tatooine", "33333", "c2"),
-            Address("a4", "work", "23 X-Wing Lane", "Rebel Base City",
+            Address("a4", "Work", "23 X-Wing Lane", "Rebel Base City",
                 "Yavin 4", "44444", "c2"),
-            Address("a5", "home", "1630 15th Street", "Queens, New York City",
+            Address("a5", "Home", "1630 15th Street", "Queens, New York City",
                 "New York", "10011", "c3"),
-            Address("a6", "work", "3000 Avengers Drive", "Marvel",
+            Address("a6", "Work", "3000 Avengers Drive", "Marvel",
                 "New York", "12201", "c3"),
         )
     }
